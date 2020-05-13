@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" style="width: 100%; height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'movie/css/bootstrap.min.css' %}">
+    <link rel="icon" href="{% static 'movie/images/logo.png' %}">
+    <link rel="stylesheet" href="{% static 'movie/css/base.css' %}">
+    <script src="{%static 'movie/css/jquery.js' %}"  crossorigin="anonymous"></script>
+    <script src="{% static 'movie/css/poper.js' %}" crossorigin="anonymous"></script>
+    <script src="{% static 'movie/js/bootstrap.min.js' %}"></script>
+    <title>
+        {% block title %}
+            Main
+        {% endblock %}
+    </title>
+</head>
+<body style="background: url({% static 'movie/images/main.jpg' %}); background-size: 100% 100%">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu">
+  <a class="navbar-brand" href="{% url 'home_page_url' %}">
+      <img src="{% static 'movie/images/logo.png' %}" alt="" class="logo">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'home_page_url' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'about_url' %}">About us</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Categories
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'search_films_url' %}">Films</a>
+          <a class="dropdown-item" href="#">Genres</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Filters</a>
+        </div>
+      </li>
+        {% if user.is_authenticated == False %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login_url' %}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'register_url' %}">Register</a>
+            </li>
+        {% endif %}
+    </ul>
+    <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'search_films_url' %}">
+
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+    {% block content %}
+    {% endblock %}
+
+    {% include 'movie/account.html' %}
+</body>
+</html>

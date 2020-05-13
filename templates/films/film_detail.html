@@ -1,0 +1,72 @@
+{% extends 'movie/base.html' %}
+
+{% block title%}
+    {{ film.title|title }}
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container">
+  <div class="slider">
+      <h3 class="w-100 text-center">{{ film.title|title }}</h3>
+    <div class="slider__wrapper ml-3" style="display: block">
+        <div class="row">
+            <div class="col-lg-4">
+                <img src="{{ film.poster.url }}" alt="poster" style="width: 220px;height: 355px; float: left">
+            </div>
+
+            <div class="col-lg-7 ml-4 mt-2" style="position: relative; height: 350px;">
+                {{ film.description }}
+                <button class="btn btn-outline-danger w-75 ml-2" style="position: absolute; bottom: 2px; left: 10px;">Watch</button>
+
+            </div>
+
+        </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div id="panel">
+    <div class="comment">
+    {% for comment in comments %}
+        <div  style="display: flex; margin-left: 20px; margin-top: 20px;">
+            <div style="width: 25%">
+                <img src="{% static 'movie/images/account_comment.png' %}" alt="account">
+                <p style="margin 10px">{{ comment.author }}</p>
+            </div>
+            <div style="width: 75%">
+              <p class="m-4">{{ comment.body }}</p>
+            </div>
+        </div>
+
+        {% for com in comment.childs.all %}
+            <div  style="display: flex; margin-left: 70px;">
+            <div style="width: 26%">
+                <img src="{% static 'movie/images/account_comment.png' %}" alt="account">
+                <p style="margin 10px">{{ com.author }}</p>
+            </div>
+            <div style="width: 75%">
+              <p class="m-4">{{ com.body }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+    $(".btn-slide").click(function(){
+        $("#panel").slideToggle("slow");
+        $(this).toggleClass("active"); return false;
+    });
+
+
+});
+</script>
+<a href="#" class="btn-slide btn btn-success">Comments</a>
+{% endblock %}

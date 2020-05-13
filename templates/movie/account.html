@@ -1,0 +1,16 @@
+{% if user.is_authenticated %}
+{% load static %}
+<div class="bg-dark account">
+    <div>
+        <img src="{% static 'movie/images/account.png' %}" alt="account">
+        {{ user.username }} <br>
+        <form action="{% url 'exit_url' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="exit" value="True">
+            <button class="btn btn-danger" style="width: 100px" type="submit">Exit</button>
+        </form>
+
+    </div>
+
+</div>
+{% endif %}

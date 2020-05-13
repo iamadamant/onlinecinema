@@ -1,0 +1,39 @@
+{% extends 'movie/base.html' %}
+
+{% block title%}
+    Login
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container">
+  <div class="slider">
+      <h3 class="w-100 text-center">Login</h3>
+    <div class="slider__wrapper ml-2 d-block" style="width: 600px">
+        <form action="{% url 'login_url' %}" method="post" style="margin:50px;">
+            {% csrf_token %}
+            <p><label for="nickname" class="mr-5">Nickname</label><input type="text" name="nickname" class="form-control"></p>
+            {% if login_error %}
+            <div class="alert alert-danger" role="alert">
+                Your login is wrong. Please check and fix it.
+            </div>
+            {% endif %}
+            <p><label for="password" class="mr-5">Password</label><input type="password" name="password" class="form-control"></p>
+            {% if password_error %}
+            <div class="alert alert-danger" role="alert">
+                Your password is wrong. Please check and fix it.
+            </div>
+            {% endif %}
+            <div class="mt-5">
+                <input type="reset" class="btn btn-danger"><input type="submit" class="btn btn-success ml-3">
+            </div>
+        </form>
+    </div>
+  </div>
+
+</div>
+
+
+
+{% endblock %}

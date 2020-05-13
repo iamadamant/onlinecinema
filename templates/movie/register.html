@@ -1,0 +1,31 @@
+{% extends 'movie/base.html' %}
+
+{% block title%}
+    Login
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container">
+  <div class="slider">
+      <h3 class="w-100 text-center">Login</h3>
+    <div class="slider__wrapper ml-2 d-block" style="width: 600px;">
+        <form action="{% url 'register_url' %}" method="post" style="margin-left:50px;">
+            {% csrf_token %}
+            <p><label for="nickname" class="mr-5">Nickname</label><input type="text" name="nickname" class="form-control"></p>
+            <p><label for="password" class="mr-5">Password</label><input type="password" name="password" class="form-control"></p>
+            <p><label for="password_again" class="mr-5">Password again</label><input type="password" name="password_again" class="form-control"></p>
+            <p><label for="mail" class="mr-5">Email</label><input type="email" name="mail" class="form-control"></p>
+            <div class="mt-1">
+                <input type="reset" class="btn btn-danger"><input type="submit" class="btn btn-success ml-3">
+            </div>
+        </form>
+    </div>
+  </div>
+
+</div>
+
+
+
+{% endblock %}

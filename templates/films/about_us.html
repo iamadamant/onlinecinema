@@ -1,0 +1,28 @@
+{% extends 'movie/base.html' %}
+
+{% block title%}
+    Films
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container">
+  <div class="slider">
+      <h3 class="w-100 text-center">About Us</h3>
+    <div class="slider__wrapper ml-2" style="display: block">
+        <img src="{% static 'movie/images/example.jpg' %}" alt="example" style="width:auto; height:150px; float: left">
+        <div style="float: right">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores assumenda deserunt eaque facere id ipsa laboriosam neque nobis officiis porro quaerat, recusandae reprehenderit sed similique sit soluta velit voluptatum!
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque eius eos inventore porro? Ab dolorem et exercitationem facere nemo nisi odit officia placeat quis tempore temporibus ut vero, voluptas.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet commodi delectus, earum, enim et fuga illo itaque laboriosam laborum maiores mollitia natus nisi perferendis quia quis tempora tempore vel!
+
+        </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+{% endblock %}
