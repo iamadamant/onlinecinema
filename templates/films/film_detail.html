@@ -16,10 +16,12 @@
                 <img src="{{ film.poster.url }}" alt="poster" style="width: 220px;height: 355px; float: left">
             </div>
 
-            <div class="col-lg-7 ml-4 mt-2" style="position: relative; height: 350px;">
+            <div class="col-lg-7 ml-4 mt-2" style="position: relative; height: 350px; display: flex; flex-direction: column; justify-content:space-between;">
                 {{ film.description }}
-                <button class="btn btn-outline-danger w-75 ml-2" style="position: absolute; bottom: 2px; left: 10px;">Watch</button>
-
+                <div class="row">
+                <button class="btn btn-outline-danger ml-2 col-lg-5">Trailer</button>
+                <a href="#" class="btn-slide btn btn-success offset-1 col-lg-5">Comments<span class="badge badge-pill badge-dark ml-3" id=""commentCount>{{ film.comments.all.count }}</span></a>
+                </div>
             </div>
 
         </div>
@@ -28,10 +30,12 @@
   </div>
 
 </div>
+{% if comments %}
 
 <div id="panel">
-    <div class="comment">
+
     {% for comment in comments %}
+    <div class="comment">
         <div  style="display: flex; margin-left: 20px; margin-top: 20px;">
             <div style="width: 25%">
                 <img src="{% static 'movie/images/account_comment.png' %}" alt="account">
@@ -43,7 +47,7 @@
         </div>
 
         {% for com in comment.childs.all %}
-            <div  style="display: flex; margin-left: 70px;">
+        <div  style="display: flex; margin-left: 70px;">
             <div style="width: 26%">
                 <img src="{% static 'movie/images/account_comment.png' %}" alt="account">
                 <p style="margin 10px">{{ com.author }}</p>
@@ -53,20 +57,26 @@
             </div>
         </div>
         {% endfor %}
+        </div>
     {% endfor %}
-    </div>
+
 </div>
-
-<script type="text/javascript">
-$(document).ready(function(){
-
-    $(".btn-slide").click(function(){
-        $("#panel").slideToggle("slow");
-        $(this).toggleClass("active"); return false;
-    });
+{% endif %}
 
 
-});
-</script>
-<a href="#" class="btn-slide btn btn-success">Comments</a>
+<script type="text/javascript" src="{% static 'movie/js/film_detail/show_comment.js' %}"></script>
+<form action=""  method="post" class="comment-form" id="com-for">
+    <textarea name="body" cols="30" rows="3" placeholder="Your comment" required style="resize: none;" id="text"></textarea><br>
+    <input type="submit" class="btn btn-primary" value="Add comment" style="visibility: visible">
+    <input type="reset" class="btn btn-danger">
+    <input type="hidden" value="{% url 'add_comment_url' pk=film.pk %}?author={{ user.id }}" name="url">
+    <input type="hidden" value="{{ film.pk }}" name="film_pk">
+    {% csrf_token %}
+</form>
+
+{% if user.is_authenticated %}
+    <script type="text/javascript" src="{% static 'movie/js/film_detail/send_comment.js' %}"></script>
+{% else %}
+    <script src="{% static 'movie/js/film_detail/authenticate_error.js' %}"></script>
+{% endif %}
 {% endblock %}

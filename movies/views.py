@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views import View
+from django.views.generic import CreateView
 
 
 def about(request):

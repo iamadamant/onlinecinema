@@ -18,6 +18,7 @@ class Film(models.Model):
     rating = models.PositiveSmallIntegerField(blank=True)
     duration = models.DurationField(verbose_name='Duration')
     genres = models.ManyToManyField(Genre, related_name='films', verbose_name='Genres')
+    trailer_url = models.URLField(max_length=512)
 
     def __str__(self):
         return str(self.title)
