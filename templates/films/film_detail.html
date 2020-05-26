@@ -35,11 +35,11 @@
 <div id="panel">
 
     {% for comment in comments %}
-    <div class="comment">
-        <div  style="display: flex; margin-left: 20px; margin-top: 20px;">
+    <div>
+        <div  style="display: flex; margin-left: 20px; margin-top: 20px;" class="comment">
             <div style="width: 25%">
                 <img src="{% static 'movie/images/account_comment.png' %}" alt="account">
-                <p style="margin 10px">{{ comment.author }}</p>
+                <a style="margin 10px" data-id="{{ comment.id }}" onclick="responseHandler(this.dataset.id, this.innerText)" class="author">{{ comment.author }}</a>
             </div>
             <div style="width: 75%">
               <p class="m-4">{{ comment.body }}</p>
@@ -47,10 +47,10 @@
         </div>
 
         {% for com in comment.childs.all %}
-        <div  style="display: flex; margin-left: 70px;">
+        <div  style="display: flex; margin-left: 70px;" class="comment">
             <div style="width: 26%">
                 <img src="{% static 'movie/images/account_comment.png' %}" alt="account">
-                <p style="margin 10px">{{ com.author }}</p>
+                <a style="margin 10px" data-id="{{ com.id }}">{{ com.author }}</a>
             </div>
             <div style="width: 75%">
               <p class="m-4">{{ com.body }}</p>
@@ -65,18 +65,21 @@
 
 
 <script type="text/javascript" src="{% static 'movie/js/film_detail/show_comment.js' %}"></script>
-<form action=""  method="post" class="comment-form" id="com-for">
+<form action=""  method="post" class="comment-form" id="com-for" onreset="clearForm(this)">
     <textarea name="body" cols="30" rows="3" placeholder="Your comment" required style="resize: none;" id="text"></textarea><br>
     <input type="submit" class="btn btn-primary" value="Add comment" style="visibility: visible">
-    <input type="reset" class="btn btn-danger">
+    <input type="reset" class="btn btn-danger" value="Reset">
     <input type="hidden" value="{% url 'add_comment_url' pk=film.pk %}?author={{ user.id }}" name="url">
     <input type="hidden" value="{{ film.pk }}" name="film_pk">
+    <input type="hidden" value="" name="parent_id" data-default-value="">
     {% csrf_token %}
 </form>
 
 {% if user.is_authenticated %}
     <script type="text/javascript" src="{% static 'movie/js/film_detail/send_comment.js' %}"></script>
+    <script src="{% static 'movie/js/film_detail/send_response.js' %}"></script>
 {% else %}
     <script src="{% static 'movie/js/film_detail/authenticate_error.js' %}"></script>
 {% endif %}
+<script src="{% static 'movie/js/film_detail/clear_form.js' %}"></script>
 {% endblock %}

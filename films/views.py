@@ -1,12 +1,14 @@
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.http import HttpRequest, JsonResponse
+from django.http import QueryDict
 from django.views.generic import ListView, DetailView
 
 from films.models import Film, Genre, Comment
 from django.http.response import HttpResponse
 from django.views.generic import View
 from django.core import serializers
+from films.forms import *
+from django.utils.html import escape
 # Create your views here.
 
 
@@ -39,14 +41,23 @@ class FilmView(DetailView):
 
 class FilmCommentsView(View):
 
-    def post(self, request, pk, *args, **kwargs):
+    def put(self, request, pk, *args, **kwargs):
         author_id = request.GET.get('author')
         film = Film.objects.get(pk=pk)
         author = User.objects.get(pk=author_id)
-        body = request.POST.get('body', None)
-        Comment.objects.update_or_create(film=film, author=author, parent=None, defaults={'body': body})
-        comments = film.comments.all()
-        data = serializers.serialize('json', comments, use_natural_foreign_keys=True)
-        return HttpResponse(data, content_type='application/json')
+        User.natural_key = lambda x: (x.id, x.username)
+        PUT = QueryDict(request.body.decode('utf-8'))
+        body_text = PUT.getlist('body', None)[0]
+        parent_id = PUT.getlist('parent', None)[0]
+        form = AddCommentForm({'body': body_text})
+        if form.is_valid():
+            body = escape(form.cleaned_data['body'])
+            parent = None
+            if parent_id != '':
+                parent = Comment.objects.get(pk=parent_id)
+            Comment.objects.update_or_create(film=film, author=author, parent=parent, defaults={'body': body})
+            comments = film.comments.all()
+            data = serializers.serialize('json', comments, use_natural_foreign_keys=True)
+            return HttpResponse(data, content_type='application/json')
 
 
